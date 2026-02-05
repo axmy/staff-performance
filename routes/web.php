@@ -31,7 +31,7 @@ Route::get('/login', function () {
 
 Route::post('/login', [LoginController::class, 'login'])
     ->name('login.attempt')
-    ->middleware('guest');
+    ->middleware(['guest', 'throttle:5,1']);
 
 Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout')
@@ -67,6 +67,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/attendance/template', [AttendanceImportController::class, 'downloadTemplate'])
         ->name('attendance.template');
     Route::get('/attendance/history', [AttendanceImportController::class, 'history'])->name('attendance.history');
+    Route::middleware(['role:admin,manager'])->group(function () {
+        Route::put('/attendance/records/{record}', [AttendanceImportController::class, 'updateRecord'])->name('attendance.records.update');
+        Route::delete('/attendance/records/{record}', [AttendanceImportController::class, 'destroyRecord'])->name('attendance.records.destroy');
+        Route::delete('/attendance/{import}', [AttendanceImportController::class, 'destroy'])->name('attendance.destroy');
+    });
     Route::get('/attendance/{import}', [AttendanceImportController::class, 'show'])->name('attendance.show');
 
     // Staff Actions

@@ -9,16 +9,17 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(
-            ['email' => 'admin@admin.com'],
-            [
+        if (!User::where('role', 'admin')->exists()) {
+            $admin = new User();
+            $admin->forceFill([
                 'name' => 'Admin',
-                'password' => 'password',
+                'email' => 'admin@admin.com',
+                'password' => 'change-me-immediately',
                 'role' => 'admin',
                 'is_active' => true,
                 'email_verified_at' => now(),
-            ]
-        );
+            ])->save();
+        }
 
         $this->call([
             DepartmentSeeder::class,
