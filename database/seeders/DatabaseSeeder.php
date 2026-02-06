@@ -12,9 +12,9 @@ class DatabaseSeeder extends Seeder
         if (!User::where('role', 'admin')->exists()) {
             $admin = new User();
             $admin->forceFill([
-                'name' => 'Admin',
-                'email' => 'admin@admin.com',
-                'password' => 'change-me-immediately',
+                'name' => 'Shareefa Adam',
+                'email' => 'shary2121@gmail.com',
+                'password' => 'shary@2121',
                 'role' => 'admin',
                 'is_active' => true,
                 'email_verified_at' => now(),
